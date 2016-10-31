@@ -1,5 +1,5 @@
 import re
-f = open("twitter.txt", "r")
+f = open("tw_db/t0.txt", "r")
 data = []
 for line in f:
     data.append(line)

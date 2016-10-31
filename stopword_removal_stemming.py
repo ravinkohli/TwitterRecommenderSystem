@@ -13,9 +13,6 @@ def read_tweets(file):
 # test_data = read_tweets("Tweets_PrePOS.txt")
 
 
-
-
-
 def tag_pos(data):
     pos_data = []
     post_list = []
