@@ -1,8 +1,10 @@
 import re
-f = open("tw_db/t0.txt", "r")
-data = []
-for line in f:
-    data.append(line)
+def read_user_from_file():
+    f = open("tw_db/t0.txt", "r")
+    data = []
+    for line in f:
+        data.append(line)
+    return data
 """
 Function to remove the usernames of the user which are not required for further processing
 """
