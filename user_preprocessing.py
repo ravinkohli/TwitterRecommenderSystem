@@ -5,7 +5,7 @@ import preprocessing
 import slang_removal
 import tfidf
 from nltk import tag
-
+import json
 
 def processing(data, username):
     data = preprocessing.remove_links(data)
@@ -66,4 +66,6 @@ keywords = return_keywords(pos_data["data"])
 # write_to_file("keywords.txt", keywords)
 
 user_keywords = tfidf.tfidf_rank_user(keywords,99,pos_data["user"][0])
-print(user_keywords)
+
+with open('user_database.json', 'w') as fp:
+    json.dump(user_keywords, fp)
