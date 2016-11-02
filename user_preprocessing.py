@@ -5,7 +5,8 @@ import preprocessing
 import slang_removal
 import tfidf
 from nltk import tag
-
+from flask import Flask, jsonify
+app = Flask(__name__)
 
 def processing(data, username):
     data = preprocessing.remove_links(data)
@@ -66,4 +67,9 @@ keywords = return_keywords(pos_data["data"])
 # write_to_file("keywords.txt", keywords)
 
 user_keywords = tfidf.tfidf_rank_user(keywords,99,pos_data["user"][0])
-print(user_keywords)
+@app.route('/TwitterRecommenderSystem/api/v1.0/tags', methods=['GET'])
+def get_tasks():
+    return jsonify({'tags': user_keywords})
+
+if __name__ == '__main__':
+    app.run(debug=True)
