@@ -17,23 +17,27 @@ def idf(word, bloblist):
 def tfidf(word, blob, bloblist):
     return tf(word, blob) * idf(word, bloblist)
 
-
-def tfidf_rank(data,i,user):
-    bloblist = []
-    user_list = {}
-    for x in range(1,i+1):
-        stre = str(x)
-        f = open("tw_db/t" + stre + ".txt", "r")
-        text = ""
-        for line in f:
-            text = line + " " + text
-        bloblist.append(tb(text))
-    for i, blob in enumerate(bloblist):
-        for tweet in data[i]:
-            scores = {word: tfidf(word, blob, bloblist) for word in tweet if word != ""}
-        sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-        user_list[user[i]] = sorted_words
-    return user_list
+#
+# def tfidf_rank(data,i,user):
+#     bloblist = []
+#     user_list = {}
+#     for x in range(1,i+1):
+#         stre = str(x)
+#         f = open("tw_db/t" + stre + ".txt", "r")
+#         text = ""
+#         for line in f:
+#             text = line + " " + text
+#         bloblist.append(tb(text))
+#     for i, blob in enumerate(bloblist):
+#         for tweet in data[i]:
+#             scores = {word.lower(): tfidf(word, blob, bloblist) for word in tweet if word != " "}
+#         sort = {}
+#         sorted_words = sorted(scores.values())
+#         sorted_keys = sorted(scores, key=scores.get)
+#         for j in range(0, len(sorted_words)):
+#             sort[sorted_keys[j]] = sorted_words[j]
+#         user_list[user[i]] = sort
+#     return user_list
 
 
 def tfidf_rank_user(data,i,user):
@@ -46,9 +50,15 @@ def tfidf_rank_user(data,i,user):
             text = line + " " + text
         bloblist.append(tb(text))
     f.close()
+    scores = {}
     for i, blob in enumerate(bloblist):
-        print(type(blob))
         for tweet in data:
-            scores = {word: tfidf(word, blob, bloblist) for word in tweet if word != ""}
-        sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-        return {user[0]: sorted_words}
+            for word in tweet:
+                if word != " ":
+                    scores[word.lower()] = tfidf(word, blob, bloblist)
+        sort = {}
+        sorted_words = sorted(scores.values(),reverse=True)
+        sorted_keys = sorted(scores, key=scores.get,reverse=True)
+        for i in range(0,len(sorted_words)):
+            sort[sorted_keys[i]] = sorted_words[i]
+        return {user: sort}

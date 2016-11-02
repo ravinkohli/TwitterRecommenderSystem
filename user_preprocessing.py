@@ -6,6 +6,7 @@ import slang_removal
 import tfidf
 from nltk import tag
 
+
 def processing(data, username):
     data = preprocessing.remove_links(data)
     data = preprocessing.remove_username("@"+ username, data)
@@ -19,10 +20,10 @@ def processing(data, username):
     return data
 
 
-def pos_tag():
+def pos_tag(i):
     test_data = []
     test_data_list = {"user": [], "data": []}
-    test_data = stopword_removal_stemming.read_tweets("tw_db/t0.txt")
+    test_data = stopword_removal_stemming.read_tweets("tw_db/t" + i + ".txt")
     if "\n" in test_data[0]:
         user = test_data[0].replace("\n", "")
     test_data_list["user"].append(user)
@@ -34,7 +35,7 @@ def pos_tag():
     test_data = []
     return test_data_list
 
-pos_data = pos_tag()
+pos_data = pos_tag("0")
 
 def return_keywords(data):
     keywords_list = []
@@ -51,7 +52,6 @@ def return_keywords(data):
     return keywords_list
 
 keywords = return_keywords(pos_data["data"])
-
 #
 # def write_to_file(file, data):
 #     f = open(file, "w")
@@ -65,5 +65,5 @@ keywords = return_keywords(pos_data["data"])
 #
 # write_to_file("keywords.txt", keywords)
 
-user_keywords = tfidf.tfidf_rank_user(keywords,99,pos_data["user"])
-
+user_keywords = tfidf.tfidf_rank_user(keywords,99,pos_data["user"][0])
+print(user_keywords)
