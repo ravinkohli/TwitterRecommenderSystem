@@ -67,6 +67,9 @@ keywords = return_keywords(pos_data["data"])
 # write_to_file("keywords.txt", keywords)
 
 user_keywords = tfidf.tfidf_rank_user(keywords,99,pos_data["user"][0])
+with open('user_database.json', 'w') as fp:
+    json.dump(user_keywords, fp)
+
 @app.route('/TwitterRecommenderSystem/api/v1.0/tags', methods=['GET'])
 def get_tasks():
     return jsonify({'tags': user_keywords})
