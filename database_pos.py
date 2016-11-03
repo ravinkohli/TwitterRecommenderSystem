@@ -8,7 +8,6 @@ from nltk import tag
 import json
 
 
-
 def processing(data, username):
     data = preprocessing.remove_links(data)
     data = preprocessing.remove_username("@"+ username, data)
@@ -75,6 +74,7 @@ keywords = return_keywords(pos_data["data"])
 
 user_keywords = {}
 user = pos_data["user"]
+
 for i in range(0,len(user)):
     user_keywords.update(tfidf.tfidf_rank_user(keywords[i],99,user[i]))
 
