@@ -5,6 +5,7 @@ import re
 import preprocessing
 import slang_removal
 import tfidf
+import pandas as pd
 from nltk import tag
 from flask import Flask, jsonify
 
@@ -68,13 +69,25 @@ keywords = return_keywords(pos_data["data"])
 #
 # write_to_file("keywords.txt", keywords)
 
+tags = []
+tf = []
+
 user_keywords = tfidf.tfidf_rank_user(keywords,99,pos_data["user"][0])
-with open('user_database.json', 'w') as fp:
-    json.dump(user_keywords, fp)
+for y in user_keywords.values():
+    for x in y:
+        tags.append(x)
+    for x in y.values():
+        tf.append(x)
+
+df = pd.DataFrame(tags)
+df['1'] = tf
+df = df.rename(columns={0: 'word', '1': 'tf'})
+
+finalJSON = df.reset_index().to_json(orient='records')
 
 @app.route('/TwitterRecommenderSystem/api/v1.0/tags', methods=['GET'])
 def get_tasks():
-    return jsonify({'tags': user_keywords})
+    return finalJSON
 
 if __name__ == '__main__':
     app.run(debug=True)
