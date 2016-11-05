@@ -1,6 +1,7 @@
 import stopword_removal_stemming
 import nltk
 import json
+import jsonpickle
 import re
 import preprocessing
 import slang_removal
@@ -84,10 +85,11 @@ df['1'] = tf
 df = df.rename(columns={0: 'word', '1': 'tf'})
 
 finalJSON = df.reset_index().to_json(orient='records')
+finalJSON = jsonpickle.decode(finalJSON)
 
 @app.route('/TwitterRecommenderSystem/api/v1.0/tags', methods=['GET'])
 def get_tasks():
-    return finalJSON
+    return jsonify({'tags': finalJSON})
 
 if __name__ == '__main__':
     app.run(debug=True)
